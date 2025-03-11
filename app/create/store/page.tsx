@@ -10,7 +10,7 @@ import { addToast } from "@heroui/toast";
 import { useWrite } from "@/utils/writeContract";
 import { useAccount } from "wagmi";
 
-export default function App() {
+export default function StoreCreatePage() {
     const [loading, setLoading] = React.useState<boolean>(false);
     const {writeAsync} = useWrite({contract:"Store"})
     const {address} = useAccount()

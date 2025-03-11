@@ -11,7 +11,7 @@ import { useWrite } from "@/utils/writeContract";
 import { useAccount } from "wagmi";
 import {Select, SelectItem} from "@heroui/select"
 
-export const categories = [
+const categories = [
     { key: "electronics", label: "Electronics" },
     { key: "fashion", label: "Fashion" },
     { key: "home_appliances", label: "Home Appliances" },
@@ -30,7 +30,7 @@ export const categories = [
 ];
 
 
-export default function App() {
+export default function ProductCreate() {
     const [loading, setLoading] = React.useState<boolean>(false);
     const {writeAsync} = useWrite({contract:"Nft"})
     const {address} = useAccount()

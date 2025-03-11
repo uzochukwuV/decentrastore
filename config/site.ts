@@ -28,6 +28,10 @@ export const siteConfig = {
       label: "Store",
       href: "/store",
     },
+    {
+      label: "My NFTs",
+      href: "/profile/nfts",
+    },
   ],
   navMenuItems: [
     {

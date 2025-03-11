@@ -50,9 +50,9 @@ const NFTGrid = ({ ids, isLoading = false,fetchkey, isMarket }: { ids: bigint[],
   return (
     <section className="py-8">
       <div className="container mx-auto px-4">
-        <h2 className="mb-6 text-2xl font-bold text-foreground">
+        {/* <h2 className="mb-6 text-2xl font-bold text-foreground">
           Explore Products
-        </h2>
+        </h2> */}
         {isLoading || isFetching && data !== undefined ? renderSkeleton() : renderGrid()}
       </div>
     </section>

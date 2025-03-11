@@ -24,6 +24,7 @@ export async function POST(request: NextRequest) {
       name: name,
       description: description,
       external_url: "https://pinata.cloud",
+      image_url: url,
       logo: url,
       bgcolor: bgcolor,
       banner: data.get("banner")?.toString() || "",

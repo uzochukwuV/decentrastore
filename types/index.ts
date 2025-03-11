@@ -6,7 +6,7 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
 
 // types/nft.ts
 export interface TokenizedProductNFT {
-  imageUrl: string;           // URL to the product image
+  image_url: string;           // URL to the product image
   name: string;               // Name of the product
   category: string;           // Product category (e.g., "Luxury Watches", "Sneakers")
   price: string;              // Price in ETH as a string (e.g., "5.2")
@@ -14,11 +14,12 @@ export interface TokenizedProductNFT {
   edition: number;            // Current edition number
   totalEditions: number;      // Total number of editions (1 for unique items)
   contractAddress: string;    // Blockchain contract address for the NFT
-  tokenId: string;            // Unique token ID on the blockchain
+  id: string;            // Unique token ID on the blockchain
   owner: string;              // Wallet address of the current owner
   ownerAvatar: string;        // URL to the owner's avatar image
   condition: string;          // Physical condition (e.g., "Like New", "Excellent")
-  location: string;           // Physical location of the item (e.g., "New York, NY")
+  location: string; 
+  bgcolor?:string          // Physical location of the item (e.g., "New York, NY")
 }
 
 export interface StoreData {
@@ -44,5 +45,17 @@ export interface Shop {
   ownerImage: string;
   twitter?: string;
   youtube_url?: string;
-  owner?:string
+  owner?:string;
+  id?:string
+}
+export interface ProductTransaction {
+  booked: boolean;
+  buyer: string;
+  buyerChecked: boolean;
+  disputed: boolean;
+  owner: string;
+  payedFor: boolean;
+  price: bigint;
+  sellerChecked: boolean;
+  store: string;
 }

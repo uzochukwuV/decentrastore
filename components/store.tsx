@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import { useAccount } from "wagmi";
 
   // Store Page Component
- export  const Store: React.FC<{ store: Shop, isLoading:boolean }> = ({ store, isLoading }) => {
+ export  const Store: React.FC<{ store: Shop, isLoading:boolean, id:string }> = ({ store, isLoading, id }) => {
   const {address } = useAccount()
   const {data:userListing, error:errUserListing, isFetching:isFechingUserListing } = useRead({
     contract:"MarketPlace",
@@ -29,12 +29,12 @@ import { useAccount } from "wagmi";
     args:[address],
   })
 
-    console.log(userListing)
+   
     if(isLoading) return "Loading"
     return (
       <div className="min-h-screen">
         {/* Store Banner */}
-        <div className={clsx("relative h-64 w-full rounded-md", store!.bgcolor)} style={{background: store!.bgcolor.toString()}}>
+        <div className={clsx("relative h-64 w-full rounded-md", store!.bgcolor)} style={{background: store!.bgcolor?.toString()}}>
           <Image
             src={store!.banner}
             alt={`${store!.name} Banner`}
@@ -49,25 +49,27 @@ import { useAccount } from "wagmi";
         {/* Store Info Section */}
         <div className="container mx-auto px-4 py-8">
           <Card className="mb-8" radius="lg" shadow="sm">
-            <div className="p-6 flex flex-col justify-center sm:flex-row items-center sm:items-start gap-6">
+            <div className="p-6 flex justify-center sm:flex-row items-center sm:items-start gap-6">
+              <div>
               <Avatar
                 src={store!.ownerImage}
                 size="lg"
                 radius="full"
                 className=" shadow-md"
               />
+              </div>
               <div className="text-center sm:text-left">
                 <h2 className="text-2xl font-semibold ">
                   About {store!.name}
                 </h2>
                 <Spacer y={1} />
-                <p className="">{store!.description}</p>
+                <p className=" text-sm text-default-foreground">{store!.description}</p>
                 <Spacer y={2} />
                 <div className="flex items-center justify-center sm:justify-start gap-2">
                   <span className="text-sm ">Owned by:</span>
                   <Tooltip content={store!.owner}>
                     <Chip variant="bordered" color="primary" size="sm">
-                      {store!.owner?.slice(0, 6)}...{store!.owner?.slice(-4)}
+                      {address?.toString().slice(0, 6)}...{address?.toString().slice(-4)}
                     </Chip>
                   </Tooltip>
                 </div>
@@ -78,10 +80,10 @@ import { useAccount } from "wagmi";
           {/* Products Section */}
           <Tabs className="mb-6">
             <Tab value="products" title="Listed Products">
-              <NFTGrid ids={userListing as bigint[]} isLoading={false} />
+              <NFTGrid  fetchkey="listed-1" ids={userListing as bigint[]} isLoading={isFetching} isMarket={true} />
             </Tab>
             <Tab value="products" title="UnListed Products">
-              <NFTGrid ids={data as bigint[]} isLoading={false} />
+              <NFTGrid fetchkey="unlisted--2" ids={data as bigint[]} isLoading={isFetching} isMarket={false} />
             </Tab>
             <Tab value="about" title="About Store">
               <Card className="p-6" radius="lg" shadow="sm">
@@ -93,8 +95,8 @@ import { useAccount } from "wagmi";
                 </p>
                 <Spacer y={2} />
                 <p className="">
-                  Contact us at: <a href={`mailto:support@${store!.name.toLowerCase()}.com`} className="text-primary underline">
-                    support@{store!.name.toLowerCase()}.com
+                  Contact us at: <a href={`mailto:support@${store!.name?.toLowerCase()}.com`} className="text-primary underline">
+                    support@{store!.name?.toLowerCase()}.com
                   </a>
                 </p>
               </Card>

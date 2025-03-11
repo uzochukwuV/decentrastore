@@ -10,6 +10,7 @@ import { WagmiProvider } from 'wagmi'
 import { config } from '../config/wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ToastProvider} from "@heroui/toast";
+import { StoreProvider } from "@/context/store";
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -33,7 +34,11 @@ export function Providers({ children, themeProps }: ProvidersProps) {
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <HeroUIProvider navigate={router.push}>
-          <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+          <NextThemesProvider {...themeProps}>
+            <StoreProvider>
+              {children}
+            </StoreProvider>
+          </NextThemesProvider>
           <ToastProvider />
         </HeroUIProvider>
       </QueryClientProvider>

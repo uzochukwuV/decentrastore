@@ -35,6 +35,7 @@ export async function POST(request: NextRequest) {
       })
     })
     const res = await priceData.json()
+    console.log(Number(res.result.usdPrice), Number(data.get("price")?.toString()))
     const accuratePrice = Number(res.result.usdPrice) * Number(data.get("price")?.toString());
 
     const url = await pinata.gateways.convert(uploadData.IpfsHash);
@@ -42,6 +43,7 @@ export async function POST(request: NextRequest) {
       name: name,
       description: description,
       external_url: "https://pinata.cloud",
+      image_url: url,
       logo: url,
       bgcolor: bgcolor,
       price: accuratePrice,

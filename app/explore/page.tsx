@@ -3,11 +3,21 @@ import { title } from "@/components/primitives";
 import NFTCard from "@/components/nft-card";
 import { TokenizedProductNFT } from "@/types";
 import NFTGrid from "@/components/nft-grid";
+import { useRead } from "@/utils/readContract";
+import { Skeleton } from "@heroui/skeleton";
 
 
 export default function ExplorePage() {
+  const {data, isFetching, refetch} = useRead({contract:"MarketPlace", functionName:"get_listings", args:[0, 9]})
+  const RenderSkeleton = () => (
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      {[...Array(8)].map((_, index) => (
+        <Skeleton key={index} className="h-[400px] w-full rounded-lg" />
+      ))}
+    </div>
+  );
   return (
-    <div>
+    <div className=" space-y-8">
       <div className=" bg-orange-100 rounded-md h-52 flex items-center px-8 ">
         <div className=" max-w-2xl">
         <h1 className="font-bold text-3xl text-gray-900">
@@ -19,76 +29,10 @@ export default function ExplorePage() {
         </p>
         </div>
       </div>
-      <NFTGrid nfts={sampleProducts} isLoading={false} />
+      {
+        isFetching ?  <RenderSkeleton /> : <NFTGrid ids={data as any} isLoading={false} isMarket={true} fetchkey="market-1" />
+      }
+
     </div>
   );
 }
-
-const Example = () => {
-    
-
-    return <NFTCard nft={sampleProducts[0]} />;
-};
-
-const sampleProducts: TokenizedProductNFT[] = [
-  {
-    imageUrl: "/path/to/luxury-watch.jpg",
-    name: "Rolex Submariner",
-    category: "Luxury Watches",
-    price: "5.2",
-    rarity: "Rare",
-    edition: 1,
-    totalEditions: 1,
-    contractAddress: "0x...",
-    tokenId: "1",
-    owner: "0x1234...5678",
-    ownerAvatar: "/path/to/owner1.jpg",
-    condition: "Like New",
-    location: "New York, NY",
-  },
-  {
-    imageUrl: "/path/to/vintage-guitar.jpg",
-    name: "Gibson Les Paul 1959",
-    category: "Musical Instruments",
-    price: "12.8",
-    rarity: "Legendary",
-    edition: 1,
-    totalEditions: 1,
-    contractAddress: "0x...",
-    tokenId: "2",
-    owner: "0x5678...1234",
-    ownerAvatar: "/path/to/owner2.jpg",
-    condition: "Excellent",
-    location: "Los Angeles, CA",
-  },
-  {
-    imageUrl: "/path/to/sneakers.jpg",
-    name: "Air Jordan 1 Retro",
-    category: "Sneakers",
-    price: "1.5",
-    rarity: "Limited",
-    edition: 1,
-    totalEditions: 5,
-    contractAddress: "0x...",
-    tokenId: "3",
-    owner: "0x9abc...def0",
-    ownerAvatar: "/path/to/owner3.jpg",
-    condition: "Brand New",
-    location: "Chicago, IL",
-  },
-  {
-    imageUrl: "/path/to/art-sculpture.jpg",
-    name: "Bronze Sculpture",
-    category: "Art & Collectibles",
-    price: "3.9",
-    rarity: "Unique",
-    edition: 1,
-    totalEditions: 1,
-    contractAddress: "0x...",
-    tokenId: "4",
-    owner: "0xdef0...9abc",
-    ownerAvatar: "/path/to/owner4.jpg",
-    condition: "Pristine",
-    location: "Paris, France",
-  },
-];

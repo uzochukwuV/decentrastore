@@ -1,5 +1,5 @@
 "use client"
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@heroui/button";
 import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card"
 import { Badge } from "@heroui/badge";
@@ -13,29 +13,28 @@ import { addToast } from "@heroui/toast";
 import { useWrite } from "@/utils/writeContract";
 import { useAccount } from "wagmi";
 import { heroui } from "@heroui/theme";
-import { TokenizedProductNFT } from "@/types";
+import { ProductTransaction, TokenizedProductNFT } from "@/types";
 import clsx from "clsx";
-import { storeContext } from "@/context/store";
-import { parseEther } from "viem";
+import { useRead } from "@/utils/readContract";
 import { deployedContracts } from "@/contracts";
+import { parseEther } from "viem";
 
-const NFTCard = ({ nft }: { nft: TokenizedProductNFT }) => {
+const NFTBuyCard = ({ nft }: { nft: TokenizedProductNFT }) => {
     const { address } = useAccount()
-    const { writeAsync, isPending } = useWrite({ contract: "MarketPlace" });
-    const { writeAsync:writeApprove, isPending:isPendingApprove } = useWrite({ contract: "Nft" });
+    
+    const [nftTx, setTx] = useState<ProductTransaction>()
     const [loading, setLoading] = useState(false)
-    const storeState = useContext(storeContext);
-    console.log(storeState?.shop)
+    const {data, isFetching, refetch} = useRead({contract:"MarketPlace", functionName:"get_stock_data", args:[nft.id]})
+    const { writeAsync, isPending } = useWrite({ contract: "MarketPlace" });
+   
 
-    const listProductMutation = useMutation({
+    const buyProductMutation = useMutation({
         mutationFn: async () => {
-            await writeApprove({
-                functionName:"approve",
-                args:[deployedContracts[5201420].CropMarketplace.address, nft.id]
-            })
+           
             const data = await writeAsync({
-                functionName:"list_for_sale",
-                args:[BigInt(nft.id), BigInt(Number(nft.price).toFixed(0)), deployedContracts[5201420].CropNft.address],
+                functionName:"payForStock",
+                args:[BigInt(nft.id)],
+                value:parseEther(BigInt(Number(nftTx?.price).toFixed(0)).toString())
                 
             })
             console.log(data)
@@ -43,7 +42,7 @@ const NFTCard = ({ nft }: { nft: TokenizedProductNFT }) => {
         },
         onSuccess: async (data) => {
             // Handle successful Product creation
-            console.log('Product created:', data);
+            console.log('Product bougth:', data);
             
             // You might want to redirect or show a success message
             addToast({
@@ -68,6 +67,13 @@ const NFTCard = ({ nft }: { nft: TokenizedProductNFT }) => {
         },
     });
 
+    useEffect(()=>{
+        if(!nft.id){
+            refetch()
+        }
+        console.log(data)
+        setTx(data as any)
+    })
     return (
         <Card
             className="w-72 overflow-hidden transition-all hover:shadow-lg"
@@ -99,7 +105,7 @@ const NFTCard = ({ nft }: { nft: TokenizedProductNFT }) => {
             {/* Card Content */}
             <CardBody className={clsx("px-4", `bg-[${nft.bgcolor}]`)}>
                 {/* Name */}
-                <h3 className="text-lg text-white font-semibold ">{nft.name} #{nft.id}</h3>
+                <h3 className="text-lg text-white font-semibold ">{nft.name}</h3>
                 <Spacer y={1} />
 
                 {/* Collection and Creator */}
@@ -121,34 +127,73 @@ const NFTCard = ({ nft }: { nft: TokenizedProductNFT }) => {
                 <div className="flex justify-between text-sm text-background">
                     <div>
                         <p className="">Price</p>
-                        <p className="font-medium">{Number(nft.price).toFixed(2)} ETN</p>
+                        <p className="font-medium">{nftTx?.price} ETN</p>
                     </div>
                     <div className="text-right">
                         <p className="">Shop</p>
                         <p className="font-medium">
-                            {storeState?.shop?.id}/{storeState?.shop?.owner}
+                            showShop
                         </p>
                     </div>
                 </div>
                 <Spacer y={3} />
 
                 {/* Purchase Button */}
-                
+                <div className="flex text-sm text-background">
+                    {
+                        nftTx?.payedFor && <div>
+                       
+                        <p className="font-medium">Payed</p>
+                    </div>
+                    }
+                    {
+                        nftTx?.buyerChecked && <div>
+                       
+                        <p className="font-medium">Buyer Marked</p>
+                    </div>
+                    }
+                    {
+                        nftTx?.sellerChecked && <div>
+                       
+                        <p className="font-medium">Seller Marked</p>
+                    </div>
+                    }
+                </div>
+                <Spacer y={3} />
             </CardBody>
             <CardFooter>
-                    <Button
-                        onPress={() => listProductMutation.mutateAsync()}
-                        disabled={isPending || !address}
+                {
+                    nftTx?.payedFor ? <Button
+                    onPress={() => (3)}
+                    disabled={isPending || !address}
+                    style={{color:nft.bgcolor!, background:"white"}}
+                    className="w-full"
+                    isLoading={isPending}
+                >
+                    {isPending ? "Processing" : "Mark as Delivered"}
+                </Button>: nftTx?.owner == address ?<Button
+                        onPress={() => (3)}
+                        disabled
                         style={{color:nft.bgcolor!, background:"white"}}
                         className="w-full"
                         isLoading={isPending}
                     >
-                        {isPending ? "Processing" : "List Now"}
+                        {isPending ? "Processing" : "Awaiting Payment"}
+                    </Button> :<Button
+                        onPress={() => buyProductMutation.mutateAsync()}
+                        disabled={loading}
+                        style={{color:nft.bgcolor!, background:"white"}}
+                        className="w-full"
+                        isLoading={isPending}
+                    >
+                        {isPending ? "Processing" : "Buy"}
                     </Button>
+                }
+                    
                 </CardFooter>
         </Card>
     );
 };
 
 
-export default NFTCard;
+export default NFTBuyCard;

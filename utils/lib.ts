@@ -1,6 +1,6 @@
 export function formatListing(data:bigint[]) : bigint[]{
+    if(!data) return [];
     let newList:bigint[] = [];
-    console.log(data)
     data.forEach((i)=>{
         if(i == BigInt(0)){
             

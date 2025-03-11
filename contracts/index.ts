@@ -3,7 +3,7 @@
 export const deployedContracts = {
   5201420: {
     CropCoin: {
-      address: "0xDe1831C7a217940c2342B2b34c17a7eb570dD777",
+      address: "0x3934A6C7BF0B9Fcf09149ce603238676f63177C9",
       abi: [
         {
           inputs: [
@@ -914,7 +914,7 @@ export const deployedContracts = {
       },
     },
     CropMarketplace: {
-      address: "0x23C8D3925af4e736CdA92EE9f134ad6115c250a3",
+      address: "0x4D50C27348591D13727D90D752Ab643B131534ba",
       abi: [
         {
           inputs: [

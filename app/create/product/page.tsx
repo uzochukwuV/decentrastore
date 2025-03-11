@@ -141,7 +141,7 @@ export default function App() {
                         className=" w-full block "
                         label="Price"
                         labelPlacement="outside"
-                        name="Price"
+                        name="price"
                         placeholder="Product Price"
                         type="number"
                     />

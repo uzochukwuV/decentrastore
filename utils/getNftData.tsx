@@ -1,6 +1,6 @@
 
 "use client"
-import { useAccount, useReadContract, useReadContracts } from "wagmi"
+import { useAccount, useChainId, useReadContract, useReadContracts } from "wagmi"
 import { deployedContracts } from "@/contracts"
 import { useQuery } from "@tanstack/react-query"
 import { useRead } from "./readContract"
@@ -8,6 +8,7 @@ import { formatListing } from "./lib"
 import { useEffect } from "react"
 
 import { addToast } from "@heroui/toast"
+import { config } from "@/config/wagmi"
 
 
 export function useNFTData(
@@ -22,11 +23,12 @@ export function useNFTData(
            
         }) {
             
+            const id = useChainId({config:config})
     const { data: storeUri, error: errStoreUri, isFetching: isFechingStoreUri } = useReadContracts({
         contracts: formatListing(ids).map((i) => {
             return {
-                abi: deployedContracts[5201420].CropNft.abi,
-                address: deployedContracts[5201420].CropNft.address as any,
+                abi: deployedContracts[id].CropNft.abi,
+                address: deployedContracts[id].CropNft.address as any,
                 functionName: 'tokenURI',
                 args: [i]
             }

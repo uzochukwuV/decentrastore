@@ -20,52 +20,37 @@ export const siteConfig = {
       label: "Create Product",
       href: "/create/product",
     },
-    {
-      label: "Governance",
-      href: "/blog",
-    },
+   
     {
       label: "Store",
       href: "/store",
     },
-    {
-      label: "My NFTs",
-      href: "/profile/nfts",
-    },
+   
   ],
   navMenuItems: [
     {
-      label: "Profile",
-      href: "/profile",
+      label: "Home",
+      href: "/",
     },
     {
-      label: "Dashboard",
-      href: "/dashboard",
+      label: "Explore",
+      href: "/explore",
     },
     {
-      label: "Projects",
-      href: "/projects",
+      label: "Create Store",
+      href: "/create/store",
     },
     {
-      label: "Team",
-      href: "/team",
+      label: "Create Product",
+      href: "/create/product",
     },
+   
     {
-      label: "Calendar",
-      href: "/calendar",
+      label: "Store",
+      href: "/store",
     },
-    {
-      label: "Settings",
-      href: "/settings",
-    },
-    {
-      label: "Help & Feedback",
-      href: "/help-feedback",
-    },
-    {
-      label: "Logout",
-      href: "/logout",
-    },
+   
+   
   ],
   links: {
     github: "https://github.com/heroui-inc/heroui",

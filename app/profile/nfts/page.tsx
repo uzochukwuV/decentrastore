@@ -9,6 +9,7 @@ import { useAccount } from "wagmi";
 export default function MNFTPage() {
     const {address} = useAccount()
   const {data, isFetching, refetch} = useRead({contract:"MarketPlace", functionName:"get_user_purchase", args:[9, address]})
+   const {data: nft, isFetching: isFetchingNft}  = useRead({contract:"Nft", functionName:"getAllUserNFT", args:[ address]})
   const RenderSkeleton = () => (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {[...Array(8)].map((_, index) => (
@@ -16,6 +17,8 @@ export default function MNFTPage() {
       ))}
     </div>
   );
+
+  console.log(nft)
   return (
     <div className=" space-y-8">
       <div className=" bg-orange-100 rounded-md h-52 flex items-center px-8 ">
@@ -30,6 +33,9 @@ export default function MNFTPage() {
       </div>
       {
         isFetching ?  <RenderSkeleton /> : <NFTGrid ids={data as any} isLoading={false} isMarket={true} fetchkey="market-1" />
+      }
+      {
+        !isFetchingNft && <NFTGrid ids={nft as any} isLoading={false} isMarket={true} fetchkey="market-1" />
       }
 
     </div>

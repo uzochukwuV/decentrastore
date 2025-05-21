@@ -1,6 +1,7 @@
 "use client"
 import { useAccount, useChainId, useReadContract, useWriteContract } from "wagmi"
 import { deployedContracts } from "@/contracts"
+import { config } from "@/config/wagmi"
 
 export function useWrite(
     {
@@ -13,7 +14,7 @@ export function useWrite(
     }) {
     const { address } = useAccount()
     const {writeContractAsync, ...games} = useWriteContract()
-    const id = useChainId()
+    const id = useChainId({config: config})
     const writeAsync = async ({
         args,
         functionName,

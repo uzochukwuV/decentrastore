@@ -34,7 +34,9 @@ export default function MNFTPage() {
       {
         isFetching ?  <RenderSkeleton /> : <NFTGrid ids={data as any} isLoading={isFetchingNft} isMarket={false} fetchkey="market-1" />
       }
-      
+       {/* {
+        isFetching ?  <RenderSkeleton /> : <NFTGrid ids={nft as any} isLoading={isFetchingNft} isMarket={false} fetchkey="market-1" />
+      } */}
 
     </div>
   );

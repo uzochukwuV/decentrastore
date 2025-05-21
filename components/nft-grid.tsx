@@ -13,7 +13,7 @@ const NFTGrid = ({ ids, isLoading = false,fetchkey, isMarket }: { ids: bigint[],
   useEffect(() => {
     
     console.log(data)
-  }, [isFetching, data])
+  }, [isFetching])
 
   // Skeleton Loader for when data is loading
   const renderSkeleton = () => (

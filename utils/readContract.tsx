@@ -15,16 +15,16 @@ export function useRead(
             functionName: any
         }) {
     const { address } = useAccount({config:config})
-    const id = useChainId()
+    const id = useChainId({config:config})
     const res = useReadContract({
         abi: contract == "MarketPlace" ?
-            deployedContracts[5201420].CropMarketplace.abi : contract == "Store" ?
-                deployedContracts[5201420].Store.abi :
-                deployedContracts[5201420].CropNft.abi,
+            deployedContracts[id].CropMarketplace.abi : contract == "Store" ?
+                deployedContracts[id].Store.abi :
+                deployedContracts[id].CropNft.abi,
         address: contract == "MarketPlace" ?
-            deployedContracts[5201420].CropMarketplace.address as `0x${string}` :
-            contract == "Store" ? deployedContracts[5201420].Store.address as `0x${string}` :
-                deployedContracts[5201420].CropNft.address as `0x${string}`,
+            deployedContracts[id].CropMarketplace.address as `0x${string}` :
+            contract == "Store" ? deployedContracts[id].Store.address as `0x${string}` :
+                deployedContracts[id].CropNft.address as `0x${string}`,
         functionName: functionName,
         args: args,
         account:address,

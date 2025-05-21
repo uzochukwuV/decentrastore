@@ -1,5 +1,6 @@
 "use client"
 import { Store } from "@/components/store";
+import { config } from "@/config/wagmi";
 import { storeContext } from "@/context/store";
 import { deployedContracts } from "@/contracts";
 import { StoreData, TokenizedProductNFT } from "@/types";
@@ -10,7 +11,7 @@ import { useContext, useEffect, useImperativeHandle, useState } from "react";
 import { useAccount, useReadContract } from "wagmi";
 
   const StorePage: React.FC = () => {
-    const {address} = useAccount();
+    const {address} = useAccount({config: config});
     const [storeId, setStoreId] = useState<string|null>(null)
     const storeState = useContext(storeContext);
     const {data:store, error:errStore, isFetching:isFechingStore } = useRead({

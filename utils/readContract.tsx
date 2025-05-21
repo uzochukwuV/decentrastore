@@ -1,6 +1,7 @@
 "use client"
-import { useAccount, useReadContract } from "wagmi"
+import { useAccount, useChainId, useReadContract } from "wagmi"
 import { deployedContracts } from "@/contracts"
+import { config } from "@/config/wagmi"
 
 export function useRead(
     {
@@ -13,7 +14,8 @@ export function useRead(
             args: any,
             functionName: any
         }) {
-    const { address } = useAccount()
+    const { address } = useAccount({config:config})
+    const id = useChainId()
     const res = useReadContract({
         abi: contract == "MarketPlace" ?
             deployedContracts[5201420].CropMarketplace.abi : contract == "Store" ?
@@ -26,6 +28,7 @@ export function useRead(
         functionName: functionName,
         args: args,
         account:address,
+        chainId: id
         
     })
     return res;

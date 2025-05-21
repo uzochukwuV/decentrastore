@@ -13,7 +13,7 @@ export function useWrite(
         
     }) {
     const { address } = useAccount()
-    const {writeContractAsync, ...games} = useWriteContract()
+    const {writeContractAsync, ...games} = useWriteContract({config:config})
     const id = useChainId({config: config})
     const writeAsync = async ({
         args,
@@ -30,7 +30,8 @@ export function useWrite(
             account: address,
             functionName: functionName,
             args: args,
-            value:value || 0
+            value:value || 0,
+            chainId: id
         })
     }
    return {

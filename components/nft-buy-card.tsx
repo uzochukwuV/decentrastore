@@ -127,7 +127,7 @@ const NFTBuyCard = ({ nft }: { nft: TokenizedProductNFT }) => {
                 <div className="flex justify-between text-sm text-background">
                     <div>
                         <p className="">Price</p>
-                        <p className="font-medium">{nftTx?.price} ETN</p>
+                        <p className="font-medium">{nftTx?.price} eth</p>
                     </div>
                     <div className="text-right">
                         <p className="">Shop</p>

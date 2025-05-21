@@ -11,13 +11,14 @@ import Image from "next/image";
 import { useMutation } from "@tanstack/react-query";
 import { addToast } from "@heroui/toast";
 import { useWrite } from "@/utils/writeContract";
-import { useAccount } from "wagmi";
+import { useAccount, useChainId } from "wagmi";
 import { heroui } from "@heroui/theme";
 import { TokenizedProductNFT } from "@/types";
 import clsx from "clsx";
 import { storeContext } from "@/context/store";
 import { parseEther } from "viem";
 import { deployedContracts } from "@/contracts";
+import { config } from "@/config/wagmi";
 
 const NFTCard = ({ nft }: { nft: TokenizedProductNFT }) => {
     const { address } = useAccount()
@@ -26,16 +27,17 @@ const NFTCard = ({ nft }: { nft: TokenizedProductNFT }) => {
     const [loading, setLoading] = useState(false)
     const storeState = useContext(storeContext);
     console.log(storeState?.shop)
+    const id = useChainId({config:config})
 
     const listProductMutation = useMutation({
         mutationFn: async () => {
             await writeApprove({
                 functionName:"approve",
-                args:[deployedContracts[5201420].CropMarketplace.address, nft.id]
+                args:[deployedContracts[id].CropMarketplace.address, nft.id]
             })
             const data = await writeAsync({
                 functionName:"list_for_sale",
-                args:[BigInt(nft.id), BigInt(Number(nft.price).toFixed(0)), deployedContracts[5201420].CropNft.address],
+                args:[BigInt(nft.id), BigInt(Number(nft.price).toFixed(0)), deployedContracts[id].CropNft.address],
                 
             })
             console.log(data)
@@ -121,7 +123,7 @@ const NFTCard = ({ nft }: { nft: TokenizedProductNFT }) => {
                 <div className="flex justify-between text-sm text-background">
                     <div>
                         <p className="">Price</p>
-                        <p className="font-medium">{Number(nft.price).toFixed(2)} ETN</p>
+                        <p className="font-medium">{Number(nft.price).toFixed(2)} Eth</p>
                     </div>
                     <div className="text-right">
                         <p className="">Shop</p>

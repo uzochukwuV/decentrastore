@@ -68,7 +68,7 @@ const fetchDataForIds = async (ids: any, idList:any[]) => {
     console.log(ids)
     return Promise.all(
         ids.map(async (storeUri:any, i:number) => {
-            const response = await fetch("api/get_data", {
+            const response = await fetch("/api/get_data", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id: storeUri.result }),

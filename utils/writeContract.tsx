@@ -1,5 +1,5 @@
 "use client"
-import { useAccount, useReadContract, useWriteContract } from "wagmi"
+import { useAccount, useChainId, useReadContract, useWriteContract } from "wagmi"
 import { deployedContracts } from "@/contracts"
 
 export function useWrite(
@@ -13,6 +13,7 @@ export function useWrite(
     }) {
     const { address } = useAccount()
     const {writeContractAsync, ...games} = useWriteContract()
+    const id = useChainId()
     const writeAsync = async ({
         args,
         functionName,
@@ -23,8 +24,8 @@ export function useWrite(
         value?:any
     })=>{
         return await writeContractAsync({
-            abi: contract == "MarketPlace" ? deployedContracts[5201420].CropMarketplace.abi : contract == "Store" ? deployedContracts[5201420].Store.abi: deployedContracts[5201420].CropNft.abi,
-            address: contract == "MarketPlace" ? deployedContracts[5201420].CropMarketplace.address as `0x${string}` : contract == "Store" ? deployedContracts[5201420].Store.address as `0x${string}`:deployedContracts[5201420].CropNft.address as `0x${string}`,
+            abi: contract == "MarketPlace" ? deployedContracts[id].CropMarketplace.abi : contract == "Store" ? deployedContracts[id].Store.abi: deployedContracts[id].CropNft.abi,
+            address: contract == "MarketPlace" ? deployedContracts[id].CropMarketplace.address as `0x${string}` : contract == "Store" ? deployedContracts[id].Store.address as `0x${string}`:deployedContracts[id].CropNft.address as `0x${string}`,
             account: address,
             functionName: functionName,
             args: args,

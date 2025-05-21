@@ -1,10 +1,12 @@
 "use client"
+import { config } from '@/config/wagmi'
 import { Button } from '@heroui/button'
+import { sepolia } from 'viem/chains'
 import { Connector, useAccount, useConnect } from 'wagmi'
 
 
 export function WalletOptions() {
-  const { connectors, connect } = useConnect()
+  const { connectors, connect } = useConnect({config:config})
   const {address , isConnected} = useAccount()
 
   return isConnected ? <Button

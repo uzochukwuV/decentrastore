@@ -28,14 +28,14 @@ const electroneumTest = defineChain({
 })
 
 export const config = createConfig({
-  chains: [ electroneumTest],
+  chains: [sepolia, electroneumTest],
   connectors:[
     injected(),
     metaMask(),
     safe(),
   ],
   transports: {
-
+    [sepolia.id] : http(),
     [electroneumTestnet.id]: http(),
   },
 })
